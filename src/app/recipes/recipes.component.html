@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="left">
+    <button
+      type="button"
+      style="background-color: #52af52"
+      [routerLink]="['/recipes', 'form']"
+    >
+      New recipe
+    </button>
+    <ul>
+      <li>Recipe 1</li>
+      <li>Recipe 2</li>
+    </ul>
+  </div>
+  <div class="right">
+    <h1>Please select a recipe!</h1>
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+button {
+  border-radius: 5px;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+input,
+textarea {
+  text-indent: 6px;
+  width: 80%;
+  overflow-x: auto;
+  border-radius: 5px;
+}
+input {
+  height: 25px;
+}
+textarea {
+  height: 100px;
+}
+.form-group input[type="text"] {
+  overflow: auto;
+  white-space: nowrap;
+}
+input::content {
+  overflow: visible;
+}
+small {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: red;
+  margin-left: 2%;
+}
+button:disabled {
+  background-color: #8fcb8f;
+}
+button:enabled {
+  background-color: #51af52;
+}
