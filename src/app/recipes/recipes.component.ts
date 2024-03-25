@@ -19,8 +19,6 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
   ],
 })
 export class RecipesComponent {
-  selectedRecipe: string | undefined;
-
-  title = 'Recipe';
-  constructor() {}
+  selectedRecipe: Recipe | undefined;
+  headerShow: boolean = true;
 }

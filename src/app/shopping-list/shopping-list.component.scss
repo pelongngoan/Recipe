@@ -1,0 +1,36 @@
+.row {
+  margin: 0 auto;
+  width: 80%;
+}
+
+.col-xs-10 {
+  width: 100%;
+}
+
+.app-shopping-edit {
+  margin-bottom: 20px;
+}
+
+hr {
+  border: 0.5px solid #ccc;
+}
+
+.list-group {
+  padding: 0;
+  margin: 0;
+}
+
+.list-group-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  list-style-type: none;
+}
+
+.list-group-item:hover {
+  background-color: #e8e9ea;
+}

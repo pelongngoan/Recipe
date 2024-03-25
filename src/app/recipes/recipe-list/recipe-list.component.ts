@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Recipe } from '../../recipe';
 import { CommonModule } from '@angular/common';
@@ -14,31 +14,25 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   styleUrl: './recipe-list.component.scss',
   imports: [RecipeItemComponent, CommonModule, RouterLink],
 })
-export class RecipeListComponent {
-  @Output() recipeThatSelected = new EventEmitter<string>();
-  url = 'http://localhost:3000/recipes';
+export class RecipeListComponent implements OnInit {
+  @Output() recipeThatSelected = new EventEmitter<Recipe>();
+  @Output() headerShow = new EventEmitter<boolean>();
   recipeList: Recipe[] = [];
-  title = 'Recipe';
   constructor(
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    this.getAllRecipe().then((data: Recipe[]) => {
+  ) {}
+  ngOnInit(): void {
+    this.recipeService.getAllRecipe().then((data: Recipe[]) => {
       this.recipeList = data;
-      console.log(this.recipeList);
     });
   }
-  async getAllRecipe(): Promise<Recipe[]> {
-    const data = await fetch(this.url);
-
-    return (await data.json()) ?? [];
+  handleNewRecipeClicked() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+    this.handleHeaderShown();
   }
-  onNewRecipe() {
-    this.router.navigate(['form'], { relativeTo: this.route });
-  }
-
-  handleSelectItem(arg0: string | undefined) {
-    this.recipeThatSelected.emit(arg0?.toString());
+  handleHeaderShown() {
+    this.headerShow.emit(false);
   }
 }

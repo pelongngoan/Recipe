@@ -2,18 +2,15 @@
   <div class="col-md-5">
     <app-recipe-list
       (recipeThatSelected)="selectedRecipe = $event"
+      (headerShow)="headerShow = $event"
     ></app-recipe-list>
   </div>
   <div class="col-md-7">
-    <app-recipe-detail
-      *ngIf="selectedRecipe; else lableText"
-    ></app-recipe-detail>
-    <ng-template #lableText>Please select a recipe!</ng-template>
-  </div>
-  <div class="col-md-7">
-    <router-outlet></router-outlet>
+    <ng-container *ngIf="headerShow; else routerOulet">
+      <h1>Please select a recipe!</h1>
+    </ng-container>
+    <ng-template #routerOulet>
+      <router-outlet></router-outlet>
+    </ng-template>
   </div>
 </div>
-<pre>
-  {{ selectedRecipe | json }}
-</pre>

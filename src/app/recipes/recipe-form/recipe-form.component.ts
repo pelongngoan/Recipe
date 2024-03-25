@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { Recipe } from '../../recipe';
 import { RecipeService } from '../../recipe.service';
 
@@ -19,26 +20,50 @@ import { RecipeService } from '../../recipe.service';
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.scss',
 })
-export class RecipeFormComponent {
-  recipeService: RecipeService = inject(RecipeService);
-  onCancel() {
-    throw new Error('Method not implemented.');
-  }
-
-  onSubmit() {
-    console.log(this.recipeForm.value);
-  }
+export class RecipeFormComponent implements OnInit {
+  id: string | undefined;
+  editMode = false;
 
   recipeForm = this.formBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    imageURL: ['', [Validators.required, Validators.pattern('https?://.+')]],
+    imageURL: ['', [Validators.required]],
     ingredients: this.formBuilder.array([]),
   });
   constructor(
+    private route: ActivatedRoute,
+    private recipeService: RecipeService,
     private formBuilder: FormBuilder,
-    private router: Router // Inject the Router
+    private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      this.editMode = params['id'] != null;
+      this.initForm();
+    });
+  }
+  private initForm() {
+    if (this.editMode) {
+      this.recipeService.getRecipeById(this.id ?? '').then((recipe) => {
+        this.recipeForm.setValue({
+          name: recipe.name,
+          description: recipe.description,
+          imageURL: recipe.imageURL,
+          ingredients: [],
+        });
+        for (let ingredient of recipe.ingredients) {
+          this.ingredients.push(
+            this.formBuilder.group({
+              name: ingredient.name,
+              quantity: ingredient.quantity,
+            })
+          );
+        }
+      });
+    }
+  }
   get ingredients() {
     return this.recipeForm.get('ingredients') as FormArray;
   }
@@ -55,14 +80,17 @@ export class RecipeFormComponent {
   }
 
   async handleSaveRecipe(): Promise<void> {
-    // Change the return type to void as we don't need to return anything
-    const data = await this.recipeService.post(this.recipeForm.value as Recipe);
-    if (data) {
-      // Check if the submission was successful
-      // Navigate back to the home page
-      this.router.navigate(['/']); // Assuming '/' is the route for the home page
+    if (this.editMode) {
+      await this.recipeService.updateRecipe(
+        this.recipeForm.value as Recipe,
+        this.id ?? ''
+      );
     } else {
-      // Handle error case, maybe display a message to the user
+      await this.recipeService.addRecipe(this.recipeForm.value as Recipe);
     }
+    this.router.navigate(['/recipes']);
+  }
+  handleCancelEdit() {
+    this.router.navigate(['/recipes']);
   }
 }

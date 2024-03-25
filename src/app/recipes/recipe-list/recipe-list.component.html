@@ -1,8 +1,6 @@
 <div class="row">
   <div class="col">
-    <button type="button" [routerLink]="['/recipes', 'form']">
-      New Recipe
-    </button>
+    <button type="button" (click)="handleNewRecipeClicked()">New Recipe</button>
   </div>
 </div>
 <hr />
@@ -11,7 +9,7 @@
     <app-recipe-item
       *ngFor="let item of recipeList"
       [recipe]="item"
-      (newItemEvent)="handleSelectItem(item.id)"
+      (headerShow)="handleHeaderShown()"
     ></app-recipe-item>
   </div>
 </div>

@@ -1,26 +1,25 @@
-/* Style for the row */
 .row {
   display: flex;
   flex-wrap: wrap;
 }
 
-/* Style for the left column */
 .col-md-5 {
   flex: 0 0 41.666667%;
   max-width: 41.666667%;
 }
 
-/* Style for the right column */
 .col-md-7 {
   flex: 0 0 58.333333%;
   max-width: 58.333333%;
 }
 
-/* Example media query for responsiveness */
 @media (max-width: 768px) {
   .col-md-5,
   .col-md-7 {
     flex: 0 0 100%;
     max-width: 100%;
   }
+}
+h1 {
+  text-align: center;
 }
