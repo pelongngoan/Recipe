@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col">
+    <button type="button" [routerLink]="['/recipes', 'form']">
+      New Recipe
+    </button>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col">
+    <app-recipe-item
+      *ngFor="let item of recipeList"
+      [recipe]="item"
+      (newItemEvent)="handleSelectItem(item.id)"
+    ></app-recipe-item>
+  </div>
+</div>

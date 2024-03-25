@@ -45,3 +45,11 @@ button:disabled {
 button:enabled {
   background-color: #51af52;
 }
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.btn {
+  margin: 10px 5px;
+}

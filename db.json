@@ -1,29 +1,43 @@
 {
   "recipes": [
     {
-      "id": 0,
-      "name": "Acme Fresh Start Housing",
-      "imageUrl": "Chicago",
-      "description": "IL",
+      "id": "b9d6",
+      "name": "Rice",
+      "description": "ngon",
+      "imageURL": "https://img.freepik.com/free-photo/pieces-chicken-fillet-with-mushrooms-stewed-tomato-sauce-with-boiled-broccoli-rice-proper-nutrition-healthy-lifestyle-dietetic-menu-top-view_2829-20015.jpg?w=996&t=st=1710682221~exp=1710682821~hmac=0be320cd213c368cc6b874759f481315cbe7c449b4a85a102c7ed1b1158a0585",
       "ingredients": [
         {
-          "name": "sugur",
-          "amount": "1"
-        },
-        { "name": "flour", "amount": "2" }
+          "name": "rice",
+          "quantity": 2
+        }
       ]
     },
     {
-      "id": 2,
-      "name": "Buger",
-      "imageUrl": "Chicago",
-      "description": "IL",
+      "id": "5bdb",
+      "name": "CHice",
+      "description": "as",
+      "imageURL": "https://scontent.fhan2-5.fna.fbcdn.net/v/t1.15752-9/431741933_709174421399475_520389918965775859_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeESl6BDlTN9rLAA1mnCGS2y_v7MSxnqD1D-_sxLGeoPUC5Lgy2LD6yw6XcWJwDgupQRORl7t3agGlfoRX7TMo6W&_nc_ohc=iyCi65sM5WcAX9k2GKG&_nc_ht=scontent.fhan2-5.fna&oh=03_AdTfOqTGmqeDSxHQatT95NRAVzhUSmaYsWlKg17VemzAUA&oe=661E5083",
       "ingredients": [
         {
-          "name": "asa",
-          "amount": "1"
+          "name": "asdas",
+          "quantity": 222
+        }
+      ]
+    },
+    {
+      "id": "4b45",
+      "name": "Noodle soup",
+      "description": "yummy",
+      "imageURL": "https://www.servingdumplings.com/wp-content/uploads/2023/08/coconut-guchujang-noodle-soup-2-f8324a08.jpg",
+      "ingredients": [
+        {
+          "name": "egg",
+          "quantity": 1
         },
-        { "name": "cccc", "amount": "2" }
+        {
+          "name": "noodle",
+          "quantity": 1
+        }
       ]
     }
   ]

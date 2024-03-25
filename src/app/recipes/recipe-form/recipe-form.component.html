@@ -2,7 +2,7 @@
   <form
     [formGroup]="recipeForm"
     style="display: flex; flex-direction: column; margin: 10px"
-    (ngSubmit)="onSubmit()"
+    (ngSubmit)="handleSaveRecipe()"
     novalidate
   >
     <div>
@@ -61,16 +61,29 @@
         style="max-width: 300px; max-height: 300px; margin: 10px"
       />
     </div>
-    <small
-      class="alert alert-danger"
-      role="alert"
+    <div
       *ngIf="
         recipeForm.controls.imageURL.errors &&
         recipeForm.controls.imageURL.touched
       "
     >
-      URL is required*
-    </small>
+      <ng-container [ngSwitch]="true">
+        <small
+          *ngSwitchCase="recipeForm.controls.imageURL.errors?.['pattern']"
+          class="alert alert-danger"
+          role="alert"
+        >
+          Invalid URL*
+        </small>
+        <small
+          *ngSwitchCase="recipeForm.controls['imageURL'].errors?.['required']"
+          class="alert alert-danger"
+          role="alert"
+        >
+          URL is required*
+        </small>
+      </ng-container>
+    </div>
 
     <div class="form-group">
       <label for="description">Description</label>
@@ -95,10 +108,12 @@
     <hr style="width: 85%; margin: 20px 0px 20px" />
 
     <div class="form-group" formArrayName="ingredients">
-      <div style="display: flex; flex-direction: column">
-        <ng-container
-          *ngFor="let ingredient of ingredients.controls; let i = index"
-        >
+      <div
+        style="display: flex; flex-direction: column"
+        *ngFor="let ingredient of ingredients.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <ng-container>
           <div
             style="
               width: 80%;
@@ -107,37 +122,60 @@
               justify-content: space-between;
             "
           >
-            <input
-              type="text"
-              class="form-control"
-              id="ingredient-{{ i }}"
-              name="ingredient-{{ i }}"
-              placeholder="Your ingredient {{ i + 1 }}"
-              [formControlName]="i"
-              style="margin-bottom: 10px; width: 50%"
-            />
-            <input
-              type="number"
-              class="form-control"
-              id="amount-{{ i }}"
-              name="amount-{{ i }}"
-              [formControlName]="i"
-              style="margin-bottom: 10px; width: 50px"
-            />
+            <div
+              class="form-group"
+              style="margin-bottom: 10px; width: calc(50% - 20px)"
+            >
+              <input
+                type="text"
+                class="form-control"
+                id="name-{{ i }}"
+                name="name-{{ i }}"
+                placeholder="Ingredient {{ i + 1 }}"
+                formControlName="name"
+              />
+              <small
+                class="alert alert-danger"
+                role="alert"
+                id="ingredient-name-error-{{ i }}"
+                *ngIf="
+                  ingredients.controls[i].get('name')?.errors &&
+                  ingredients.controls[i].get('name')?.touched
+                "
+              >
+                Ingredients {{ i + 1 }} is required*
+              </small>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px; width: 200px">
+              <input
+                type="number"
+                class="form-control"
+                min="1"
+                placeholder="Quantity"
+                id="quantity-{{ i }}"
+                name="quantity-{{ i }}"
+                formControlName="quantity"
+              />
+              <small
+                class="alert alert-danger"
+                role="alert"
+                id="ingredient-quantity-error-{{ i }}"
+                *ngIf="
+                  ingredients.controls[i].get('quantity')?.errors &&
+                  ingredients.controls[i].get('quantity')?.touched
+                "
+              >
+                Quantity {{ i + 1 }} is required*
+              </small>
+            </div>
             <button
               type="button"
               style="height: 30px; width: 30px; background-color: #d1494a"
+              (click)="removeIngredients(i)"
             >
               X
             </button>
           </div>
-          <small
-            class="alert alert-danger"
-            role="alert"
-            id="ingredient-error-{{ i }}"
-          >
-            Ingredients {{ i + 1 }} is required*
-          </small>
         </ng-container>
       </div>
       <button

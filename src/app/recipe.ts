@@ -1,12 +1,9 @@
+import { Ingredients } from './ingredients';
+
 export interface Recipe {
-  id: Number;
+  id: string;
   name: string;
-  imageUrl: string;
+  imageURL: string;
   description: string;
-  ingredients: [
-    {
-      name: string;
-      amount: number;
-    }
-  ];
+  ingredients: Ingredients[];
 }

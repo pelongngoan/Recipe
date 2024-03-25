@@ -1,19 +1,19 @@
-<div class="container">
-  <div class="left">
-    <button
-      type="button"
-      style="background-color: #52af52"
-      [routerLink]="['/recipes', 'form']"
-    >
-      New recipe
-    </button>
-    <ul>
-      <li>Recipe 1</li>
-      <li>Recipe 2</li>
-    </ul>
+<div class="row">
+  <div class="col-md-5">
+    <app-recipe-list
+      (recipeThatSelected)="selectedRecipe = $event"
+    ></app-recipe-list>
   </div>
-  <div class="right">
-    <h1>Please select a recipe!</h1>
+  <div class="col-md-7">
+    <app-recipe-detail
+      *ngIf="selectedRecipe; else lableText"
+    ></app-recipe-detail>
+    <ng-template #lableText>Please select a recipe!</ng-template>
+  </div>
+  <div class="col-md-7">
     <router-outlet></router-outlet>
   </div>
 </div>
+<pre>
+  {{ selectedRecipe | json }}
+</pre>

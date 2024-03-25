@@ -1,0 +1,26 @@
+<div style="width: 400px; border: 1px black solid">
+  <a
+    routerLink="[index]"
+    routerLinkActive="active"
+    (click)="handleSelectItem(recipe?.id)"
+    style="
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+    "
+  >
+    <div>
+      <h4>{{ recipe?.name }}</h4>
+      <p>{{ recipe?.description }}</p>
+    </div>
+    <span>
+      <img
+        [src]="recipe?.imageURL"
+        alt="{{ recipe?.name }}"
+        class="recipe-image"
+      />
+    </span>
+  </a>
+</div>
