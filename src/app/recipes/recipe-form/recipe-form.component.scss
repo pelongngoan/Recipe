@@ -3,6 +3,11 @@
   display: flex;
   flex-direction: column;
 }
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
 label {
   display: block;
   margin-bottom: 5px;
@@ -10,6 +15,9 @@ label {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 button {
+  margin: 10px 5px;
+  height: 40px;
+  width: 70px;
   border-radius: 5px;
   color: white;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -39,10 +47,10 @@ small {
   color: red;
   margin-left: 2%;
 }
-button:disabled {
+.btn-success:disabled {
   background-color: #8fcb8f;
 }
-button:enabled {
+.btn-success:enabled {
   background-color: #51af52;
 }
 input.ng-invalid.ng-touched,
@@ -50,12 +58,27 @@ textarea.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
-.btn {
-  margin: 10px 5px;
-}
 .add-btn {
   height: 35px;
   width: 120px;
   margin-left: 10px;
   background-color: #52af52;
+}
+.btn-err {
+  background-color: #d44946;
+}
+img {
+  max-width: 300px;
+  max-height: 300px;
+  margin: 10px;
+}
+hr {
+  width: 85%;
+  margin: 20px 0px 20px;
+}
+.ng-container {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

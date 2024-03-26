@@ -19,6 +19,10 @@ export const routes: Routes = [
     component: ShoppingListComponent,
   },
   {
+    path: 'shopping-list',
+    component: ShoppingListComponent,
+  },
+  {
     path: '',
     redirectTo: '/recipes',
     pathMatch: 'full',

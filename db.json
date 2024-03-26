@@ -11,7 +11,7 @@
         },
         {
           "name": "kem",
-          "quantity": 223
+          "quantity": 22
         },
         {
           "name": "Dau",
@@ -20,6 +20,10 @@
         {
           "name": "Que",
           "quantity": 30
+        },
+        {
+          "name": "duong",
+          "quantity": 34
         }
       ],
       "id": "ab89"
@@ -73,7 +77,7 @@
       "id": "c17a"
     },
     {
-      "name": "FriceRice",
+      "name": "Com ga",
       "description": "Com ga bong cai xanh",
       "imageURL": "https://img.freepik.com/free-photo/pieces-chicken-fillet-with-mushrooms-stewed-tomato-sauce-with-boiled-broccoli-rice-proper-nutrition-healthy-lifestyle-dietetic-menu-top-view_2829-20015.jpg?w=996&t=st=1710682221~exp=1710682821~hmac=0be320cd213c368cc6b874759f481315cbe7c449b4a85a102c7ed1b1158a0585",
       "ingredients": [

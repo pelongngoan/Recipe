@@ -4,7 +4,9 @@ import { Ingredients } from '../ingredients';
 import { RecipeService } from '../recipe.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
+  AbstractControl,
   FormBuilder,
+  FormGroup,
   FormsModule,
   NgModel,
   ReactiveFormsModule,
@@ -21,10 +23,7 @@ import { Recipe } from '../recipe';
 })
 export class ShoppingListComponent implements OnInit {
   recipe: Recipe | undefined;
-  ingredientForm = this.formBuilder.group({
-    name: ['', Validators.required],
-    quantity: [0, Validators.required],
-  });
+  ingredientForm: FormGroup | undefined;
   id: string | undefined;
   index: number | undefined;
   editMode = false;
@@ -35,6 +34,10 @@ export class ShoppingListComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   ngOnInit(): void {
+    this.ingredientForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      quantity: [0, [Validators.required, this.quantityValidator]],
+    });
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.recipeService.getRecipeById(params['id']).then((recipe) => {
@@ -42,14 +45,34 @@ export class ShoppingListComponent implements OnInit {
       });
     });
   }
+  quantityValidator(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value;
+    if (value <= 0) {
+      return { invalidQuantity: { value: 'Quantity must be greater than 0' } };
+    }
+    return null;
+  }
+  getQuantityValidity(): any {
+    const control = this.ingredientForm?.get('quantity');
+    if (control !== null && !control?.touched) {
+      return null;
+    }
+    if (control?.errors?.['required']) {
+      return 'Quantity is required';
+    }
+    if (control?.errors?.['invalidQuantity']) {
+      return 'Quantity must be greater than 0';
+    }
+    return null;
+  }
 
   onEditItem(ingredient: Ingredients) {
     this.editMode = true;
     this.index = this.recipe!.ingredients.indexOf(ingredient);
-    this.ingredientForm.setValue(ingredient);
+    this.ingredientForm?.setValue(ingredient);
   }
   handleUpdate() {
-    if (this.ingredientForm.valid) {
+    if (this.ingredientForm?.valid) {
       if (!this.editMode) {
         if (this.recipe && this.recipe.ingredients) {
           this.recipe.ingredients.push(
@@ -72,7 +95,7 @@ export class ShoppingListComponent implements OnInit {
     }
   }
   handleDelete() {
-    const ingredientToDelete = this.ingredientForm.value;
+    const ingredientToDelete = this.ingredientForm?.value;
     if (this.recipe && this.recipe.ingredients) {
       const index = this.recipe.ingredients.findIndex(
         (ingredient) =>
@@ -92,7 +115,7 @@ export class ShoppingListComponent implements OnInit {
     this.handleClear();
   }
   handleClear() {
-    this.ingredientForm.reset();
+    this.ingredientForm?.reset();
     this.editMode = false;
   }
 }

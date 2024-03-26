@@ -1,29 +1,15 @@
 <div>
   <form
     [formGroup]="recipeForm"
-    style="display: flex; flex-direction: column; margin: 10px"
     (ngSubmit)="handleSaveRecipe()"
     novalidate
+    *ngIf="recipeForm"
   >
     <div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        style="height: 40px; width: 70px; align-self: flex-end"
-        [disabled]="!recipeForm.valid"
-      >
+      <button type="submit" class="btn-success" [disabled]="!recipeForm.valid">
         Save
       </button>
-      <button
-        type="button"
-        style="
-          height: 40px;
-          width: 70px;
-          align-self: flex-end;
-          background-color: #d44946;
-        "
-        (click)="handleCancelEdit()"
-      >
+      <button type="button" class="btn-err" (click)="handleCancelEdit()">
         Cancel
       </button>
     </div>
@@ -41,7 +27,8 @@
       class="alert alert-danger"
       role="alert"
       *ngIf="
-        recipeForm.controls.name.errors && recipeForm.controls.name.touched
+        recipeForm.controls['name'].errors &&
+        recipeForm.controls['name'].touched
       "
     >
       Name is required*
@@ -56,36 +43,27 @@
         formControlName="imageURL"
       />
       <img
-        *ngIf="recipeForm.value.imageURL && recipeForm.controls.imageURL.valid"
+        *ngIf="
+          recipeForm.value['imageURL'] && recipeForm.controls['imageURL'].valid
+        "
         [src]="recipeForm.value.imageURL"
         alt="Image"
-        style="max-width: 300px; max-height: 300px; margin: 10px"
       />
     </div>
     <div
       *ngIf="
-        recipeForm.controls.imageURL.errors &&
-        recipeForm.controls.imageURL.touched
+        recipeForm.controls['imageURL'].errors &&
+        recipeForm.controls['imageURL'].touched
       "
     >
-      <div>
-        <ng-container [ngSwitch]="true">
-          <small
-            *ngSwitchCase="recipeForm.controls.imageURL.errors?.['invalidUrl']!=null"
-            class="alert alert-danger"
-            role="alert"
-          >
-            Invalid URL*
-          </small>
-          <small
-            *ngSwitchCase="!recipeForm.controls.imageURL.errors?.['invalidUrl'] && recipeForm.controls.imageURL.errors?.['required']"
-            class="alert alert-danger"
-            role="alert"
-          >
-            URL is required*
-          </small>
-        </ng-container>
-      </div>
+      <small
+        class="alert alert-danger"
+        role="alert"
+        id="imageURL-error"
+        *ngIf="getImageURLValidity()"
+      >
+        {{ getImageURLValidity() }}
+      </small>
     </div>
 
     <div class="form-group">
@@ -102,14 +80,13 @@
       class="alert alert-danger"
       role="alert"
       *ngIf="
-        recipeForm.controls.description.errors &&
-        recipeForm.controls.description.touched
+        recipeForm.controls['description'].errors &&
+        recipeForm.controls['description'].touched
       "
     >
       Description is required*</small
     >
-    <hr style="width: 85%; margin: 20px 0px 20px" />
-
+    <hr />
     <div class="form-group" formArrayName="ingredients">
       <div
         style="display: flex; flex-direction: column"
@@ -117,14 +94,7 @@
         [formGroupName]="i"
       >
         <ng-container>
-          <div
-            style="
-              width: 80%;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-            "
-          >
+          <div class="ng-container">
             <div
               class="form-group"
               style="margin-bottom: 10px; width: calc(50% - 20px)"

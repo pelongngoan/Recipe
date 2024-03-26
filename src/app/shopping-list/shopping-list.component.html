@@ -2,7 +2,7 @@
   <div class="col-xs-10">
     <div class="row">
       <div class="col-xs-12">
-        <form [formGroup]="ingredientForm">
+        <form [formGroup]="ingredientForm" *ngIf="ingredientForm">
           <div class="row">
             <div class="col-sm-5 form-group">
               <label for="name">Name</label>
@@ -18,8 +18,8 @@
               class="alert alert-danger"
               role="alert"
               *ngIf="
-                ingredientForm.controls.name.errors &&
-                ingredientForm.controls.name.touched
+                ingredientForm.controls['name'].errors &&
+                ingredientForm.controls['name'].touched
               "
             >
               Name is required*
@@ -38,25 +38,27 @@
             <small
               class="alert alert-danger"
               role="alert"
+              id="imageURL-error"
               *ngIf="
-                ingredientForm.controls.quantity.errors &&
-                ingredientForm.controls.quantity.touched
+                getQuantityValidity() &&
+                ingredientForm.controls['quantity'].touched
               "
             >
-              Quantity is required*
+              {{ getQuantityValidity() }}
             </small>
           </div>
           <div class="row">
             <div class="col-xs-12">
               <button
-                class="btn btn-success"
+                class="btn-success"
                 type="submit"
                 (click)="handleUpdate()"
+                [disabled]="!ingredientForm.valid"
               >
                 {{ editMode ? "Update" : "Add" }}
               </button>
               <button
-                class="btn btn-danger"
+                class="btn-danger"
                 type="button"
                 *ngIf="editMode"
                 (click)="handleDelete()"

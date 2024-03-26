@@ -15,7 +15,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   imports: [RecipeItemComponent, CommonModule, RouterLink],
 })
 export class RecipeListComponent implements OnInit {
-  @Output() recipeThatSelected = new EventEmitter<Recipe>();
   @Output() headerShow = new EventEmitter<boolean>();
   recipeList: Recipe[] = [];
   constructor(

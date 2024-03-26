@@ -24,13 +24,8 @@ import { RecipeService } from '../../recipe.service';
 export class RecipeFormComponent implements OnInit {
   id: string | undefined;
   editMode = false;
+  recipeForm: FormGroup | undefined;
 
-  recipeForm = this.formBuilder.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
-    imageURL: ['', [Validators.required, this.imageUrlValidator]],
-    ingredients: this.formBuilder.array([]),
-  });
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
@@ -38,15 +33,13 @@ export class RecipeFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  imageUrlValidator(control: AbstractControl): { [key: string]: any } | null {
-    const validUrlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-    const value = control.value as string;
-    const isValidUrl = validUrlRegex.test(value);
-
-    return isValidUrl ? null : { invalidUrl: { value: control.value } };
-  }
-
   ngOnInit(): void {
+    this.recipeForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      imageURL: ['', [Validators.required, this.imageUrlValidator]],
+      ingredients: this.formBuilder.array([]),
+    });
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.editMode = params['id'] != null;
@@ -56,7 +49,7 @@ export class RecipeFormComponent implements OnInit {
   private initForm() {
     if (this.editMode) {
       this.recipeService.getRecipeById(this.id ?? '').then((recipe) => {
-        this.recipeForm.setValue({
+        this.recipeForm?.setValue({
           name: recipe.name,
           description: recipe.description,
           imageURL: recipe.imageURL,
@@ -73,8 +66,28 @@ export class RecipeFormComponent implements OnInit {
       });
     }
   }
+  imageUrlValidator(control: AbstractControl): { [key: string]: any } | null {
+    const validUrlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    const value = control.value as string;
+    const isValidUrl = validUrlRegex.test(value);
+
+    return isValidUrl ? null : { invalidUrl: { value: control.value } };
+  }
+  getImageURLValidity(): any {
+    const control = this.recipeForm?.get('imageURL');
+    if (control !== null && !control?.touched) {
+      return null;
+    }
+    if (control?.errors?.['required']) {
+      return 'URL is required';
+    }
+    if (control?.errors?.['invalidUrl']) {
+      return 'URL is invalid';
+    }
+    return null;
+  }
   get ingredients() {
-    return this.recipeForm.get('ingredients') as FormArray;
+    return this.recipeForm?.get('ingredients') as FormArray;
   }
   addIngredients() {
     this.ingredients.push(
@@ -91,11 +104,11 @@ export class RecipeFormComponent implements OnInit {
   handleSaveRecipe() {
     if (this.editMode) {
       this.recipeService.updateRecipe(
-        this.recipeForm.value as Recipe,
+        this.recipeForm?.value as Recipe,
         this.id ?? ''
       );
     } else {
-      this.recipeService.addRecipe(this.recipeForm.value as Recipe);
+      this.recipeService.addRecipe(this.recipeForm?.value as Recipe);
     }
     this.router.navigate(['/recipes']);
   }

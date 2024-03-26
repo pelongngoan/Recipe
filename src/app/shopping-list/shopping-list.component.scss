@@ -56,11 +56,6 @@ label {
   border-color: #4cae4c;
 }
 
-.btn-success:hover {
-  background-color: #4cae4c;
-  border-color: #398439;
-}
-
 .btn-danger {
   background-color: #d9534f;
   border-color: #d43f3a;
@@ -96,4 +91,10 @@ input {
   overflow-x: auto;
   border-radius: 5px;
   height: 25px;
+}
+.btn-success:disabled {
+  background-color: #8fcb8f;
+}
+.btn-success:enabled {
+  background-color: #51af52;
 }
