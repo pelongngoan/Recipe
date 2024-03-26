@@ -56,7 +56,7 @@
         formControlName="imageURL"
       />
       <img
-        *ngIf="recipeForm.value.imageURL"
+        *ngIf="recipeForm.value.imageURL && recipeForm.controls.imageURL.valid"
         [src]="recipeForm.value.imageURL"
         alt="Image"
         style="max-width: 300px; max-height: 300px; margin: 10px"
@@ -68,22 +68,24 @@
         recipeForm.controls.imageURL.touched
       "
     >
-      <ng-container [ngSwitch]="true">
-        <small
-          *ngSwitchCase="recipeForm.controls.imageURL.errors?.['pattern']"
-          class="alert alert-danger"
-          role="alert"
-        >
-          Invalid URL*
-        </small>
-        <small
-          *ngSwitchCase="recipeForm.controls['imageURL'].errors?.['required']"
-          class="alert alert-danger"
-          role="alert"
-        >
-          URL is required*
-        </small>
-      </ng-container>
+      <div>
+        <ng-container [ngSwitch]="true">
+          <small
+            *ngSwitchCase="recipeForm.controls.imageURL.errors?.['invalidUrl']!=null"
+            class="alert alert-danger"
+            role="alert"
+          >
+            Invalid URL*
+          </small>
+          <small
+            *ngSwitchCase="!recipeForm.controls.imageURL.errors?.['invalidUrl'] && recipeForm.controls.imageURL.errors?.['required']"
+            class="alert alert-danger"
+            role="alert"
+          >
+            URL is required*
+          </small>
+        </ng-container>
+      </div>
     </div>
 
     <div class="form-group">
@@ -179,16 +181,7 @@
           </div>
         </ng-container>
       </div>
-      <button
-        type="button"
-        style="
-          height: 35px;
-          width: 120px;
-          margin-left: 10px;
-          background-color: #52af52;
-        "
-        (click)="addIngredients()"
-      >
+      <button type="button" class="add-btn" (click)="addIngredients()">
         Add ingredient
       </button>
     </div>

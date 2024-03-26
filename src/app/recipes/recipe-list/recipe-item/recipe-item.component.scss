@@ -1,13 +1,16 @@
-/* Style for the pull-left class */
+.card {
+  width: 400px;
+  border: 1px black solid;
+}
 .pull-left {
   float: left;
 }
 .list-group-item {
-  //   background-color: #f8f9fa;
-  //   border: 1px solid #ddd;
-  //   border-radius: 4px;
-  //   padding: 10px;
-  //   margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 h4 {
@@ -23,4 +26,11 @@ p {
 .recipe-image {
   width: 100px;
   height: 100px;
+}
+a {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
 }

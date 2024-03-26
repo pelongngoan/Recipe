@@ -34,3 +34,66 @@ hr {
 .list-group-item:hover {
   background-color: #e8e9ea;
 }
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.btn {
+  margin-right: 10px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.btn-success {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.btn-success:hover {
+  background-color: #4cae4c;
+  border-color: #398439;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.btn-danger:hover {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+
+.btn-primary {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+.btn-primary:hover {
+  background-color: #286090;
+  border-color: #204d74;
+}
+small {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: red;
+  margin-left: 2%;
+}
+button {
+  border-radius: 5px;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+input {
+  text-indent: 6px;
+  width: 80%;
+  overflow-x: auto;
+  border-radius: 5px;
+  height: 25px;
+}

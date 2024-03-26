@@ -1,14 +1,5 @@
-<div style="width: 400px; border: 1px black solid">
-  <a
-    (click)="handleItemClicked()"
-    style="
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      text-decoration: none;
-      color: black;
-    "
-  >
+<div class="card">
+  <a (click)="handleItemClicked()">
     <div>
       <h4>{{ recipe?.name }}</h4>
       <p>{{ recipe?.description }}</p>

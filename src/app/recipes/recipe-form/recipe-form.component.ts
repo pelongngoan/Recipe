@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -27,7 +28,7 @@ export class RecipeFormComponent implements OnInit {
   recipeForm = this.formBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    imageURL: ['', [Validators.required]],
+    imageURL: ['', [Validators.required, this.imageUrlValidator]],
     ingredients: this.formBuilder.array([]),
   });
   constructor(
@@ -36,6 +37,14 @@ export class RecipeFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
+
+  imageUrlValidator(control: AbstractControl): { [key: string]: any } | null {
+    const validUrlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    const value = control.value as string;
+    const isValidUrl = validUrlRegex.test(value);
+
+    return isValidUrl ? null : { invalidUrl: { value: control.value } };
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
@@ -56,8 +65,8 @@ export class RecipeFormComponent implements OnInit {
         for (let ingredient of recipe.ingredients) {
           this.ingredients.push(
             this.formBuilder.group({
-              name: ingredient.name,
-              quantity: ingredient.quantity,
+              name: [ingredient.name, Validators.required],
+              quantity: [ingredient.quantity, Validators.required],
             })
           );
         }
@@ -79,18 +88,19 @@ export class RecipeFormComponent implements OnInit {
     this.ingredients.removeAt(index);
   }
 
-  async handleSaveRecipe(): Promise<void> {
+  handleSaveRecipe() {
     if (this.editMode) {
-      await this.recipeService.updateRecipe(
+      this.recipeService.updateRecipe(
         this.recipeForm.value as Recipe,
         this.id ?? ''
       );
     } else {
-      await this.recipeService.addRecipe(this.recipeForm.value as Recipe);
+      this.recipeService.addRecipe(this.recipeForm.value as Recipe);
     }
     this.router.navigate(['/recipes']);
   }
   handleCancelEdit() {
     this.router.navigate(['/recipes']);
+    this.editMode = true;
   }
 }
