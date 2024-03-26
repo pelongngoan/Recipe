@@ -133,13 +133,21 @@
                 class="alert alert-danger"
                 role="alert"
                 id="ingredient-quantity-error-{{ i }}"
+                *ngIf="getQuantityValidity(i)"
+              >
+                {{ getQuantityValidity(i) }}
+              </small>
+              <!-- <small
+                class="alert alert-danger"
+                role="alert"
+                id="ingredient-quantity-error-{{ i }}"
                 *ngIf="
                   ingredients.controls[i].get('quantity')?.errors &&
                   ingredients.controls[i].get('quantity')?.touched
                 "
               >
                 Quantity {{ i + 1 }} is required*
-              </small>
+              </small> -->
             </div>
             <button
               type="button"

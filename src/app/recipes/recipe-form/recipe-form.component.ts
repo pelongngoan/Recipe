@@ -59,7 +59,10 @@ export class RecipeFormComponent implements OnInit {
           this.ingredients.push(
             this.formBuilder.group({
               name: [ingredient.name, Validators.required],
-              quantity: [ingredient.quantity, Validators.required],
+              quantity: [
+                ingredient.quantity,
+                [Validators.required, this.quantityValidator],
+              ],
             })
           );
         }
@@ -93,12 +96,32 @@ export class RecipeFormComponent implements OnInit {
     this.ingredients.push(
       this.formBuilder.group({
         name: ['', Validators.required],
-        quantity: ['', Validators.required],
+        quantity: ['', [Validators.required, this.quantityValidator]],
       })
     );
   }
   removeIngredients(index: number) {
     this.ingredients.removeAt(index);
+  }
+  quantityValidator(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value;
+    if (value <= 0) {
+      return { invalidQuantity: { value: 'Quantity must be greater than 0' } };
+    }
+    return null;
+  }
+  getQuantityValidity(i: number): any {
+    const control = this.recipeForm?.get(`ingredients.${i}.quantity`);
+    if (control !== null && !control?.touched) {
+      return null;
+    }
+    if (control?.errors?.['required']) {
+      return `Quantity ${i + 1} is required`;
+    }
+    if (control?.errors?.['invalidQuantity']) {
+      return `Quantity ${i + 1} must be greater than 0`;
+    }
+    return null;
   }
 
   handleSaveRecipe() {
