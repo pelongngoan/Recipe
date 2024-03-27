@@ -91,7 +91,10 @@ export class ShoppingListComponent implements OnInit {
     this.router.navigate(['/shopping-list']);
   }
   handleClear() {
-    this.ingredientForm?.reset();
+    this.ingredientForm?.setValue({
+      name: '',
+      quantity: 0,
+    });
     this.editMode = false;
   }
 }

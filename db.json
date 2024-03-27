@@ -109,5 +109,11 @@
       ]
     }
   ],
-  "shopping-list": []
+  "shopping-list": [
+    {
+      "id": "6a1e",
+      "name": "Chicken",
+      "quantity": 1
+    }
+  ]
 }
