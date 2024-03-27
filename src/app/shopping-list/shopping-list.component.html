@@ -77,12 +77,13 @@
         </form>
       </div>
     </div>
+
     <hr />
     <ul class="list-group">
       <a
         class="list-group-item"
         style="cursor: pointer"
-        *ngFor="let ingredient of recipe?.ingredients; let i = index"
+        *ngFor="let ingredient of shoppingItems; let i = index"
         (click)="onEditItem(ingredient)"
       >
         {{ ingredient.name }} ({{ ingredient.quantity }})

@@ -4,6 +4,7 @@ import { Recipe } from '../recipe';
 import { CommonModule } from '@angular/common';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
+import { RecipeFormComponent } from './recipe-form/recipe-form.component';
 
 @Component({
   selector: 'app-recipes',
@@ -16,6 +17,7 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
     CommonModule,
     RecipeListComponent,
     RecipeDetailComponent,
+    RecipeFormComponent,
   ],
 })
 export class RecipesComponent {

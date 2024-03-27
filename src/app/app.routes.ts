@@ -14,17 +14,9 @@ export const routes: Routes = [
       { path: 'detail/:id', component: RecipeDetailComponent },
     ],
   },
-  {
-    path: 'shopping-list/:id',
-    component: ShoppingListComponent,
-  },
+
   {
     path: 'shopping-list',
     component: ShoppingListComponent,
-  },
-  {
-    path: '',
-    redirectTo: '/recipes',
-    pathMatch: 'full',
   },
 ];

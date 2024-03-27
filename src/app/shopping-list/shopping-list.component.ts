@@ -13,6 +13,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Recipe } from '../recipe';
+import { ShoppingListService } from '../shopping-list.service';
+import { ShoppingItem } from '../shopping-item';
 
 @Component({
   selector: 'app-shopping-list',
@@ -22,28 +24,31 @@ import { Recipe } from '../recipe';
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class ShoppingListComponent implements OnInit {
-  recipe: Recipe | undefined;
+  shoppingItems: ShoppingItem[] | undefined;
+  shoppingItem: ShoppingItem | undefined;
   ingredientForm: FormGroup | undefined;
-  id: string | undefined;
-  index: number | undefined;
-  editMode = false;
+
+  editMode: boolean | undefined;
   constructor(
-    private recipeService: RecipeService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder
+    private shoppingListService: ShoppingListService,
+    private formBuilder: FormBuilder,
+
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.ingredientForm = this.formBuilder.group({
       name: ['', Validators.required],
       quantity: [0, [Validators.required, this.quantityValidator]],
     });
-    this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.recipeService.getRecipeById(params['id']).then((recipe) => {
-        this.recipe = recipe;
-      });
+    this.editMode = false;
+    this.shoppingListService.getAllShoppingItem().then((shoppingItem) => {
+      this.shoppingItems = shoppingItem;
     });
+  }
+  onEditItem(shoppingItem: ShoppingItem) {
+    this.editMode = true;
+    this.shoppingItem = shoppingItem;
+    this.ingredientForm?.patchValue(shoppingItem);
   }
   quantityValidator(control: AbstractControl): { [key: string]: any } | null {
     const value = control.value;
@@ -65,54 +70,25 @@ export class ShoppingListComponent implements OnInit {
     }
     return null;
   }
-
-  onEditItem(ingredient: Ingredients) {
-    this.editMode = true;
-    this.index = this.recipe!.ingredients.indexOf(ingredient);
-    this.ingredientForm?.setValue(ingredient);
-  }
-  handleUpdate() {
-    if (this.ingredientForm?.valid) {
-      if (!this.editMode) {
-        if (this.recipe && this.recipe.ingredients) {
-          this.recipe.ingredients.push(
-            this.ingredientForm.value as Ingredients
-          );
-        }
-      } else if (
-        this.index !== undefined &&
-        this.recipe &&
-        this.recipe.ingredients
-      ) {
-        const updatedIngredient: Ingredients = {
-          name: this.ingredientForm.value.name || '',
-          quantity: this.ingredientForm.value.quantity || 0,
-        };
-        this.recipe.ingredients.splice(this.index, 1, updatedIngredient);
-      }
-      this.recipeService.updateRecipe(this.recipe as Recipe, this.id!);
-      this.handleClear();
+  async handleUpdate() {
+    if (this.editMode) {
+      this.shoppingListService.updateShoppingItem(
+        this.ingredientForm?.value,
+        this.shoppingItem?.id ?? ''
+      );
+    } else {
+      this.shoppingListService.addShoppingItem(this.ingredientForm?.value);
     }
+    this.shoppingItems = await this.shoppingListService.getAllShoppingItem();
+    this.handleClear();
   }
   handleDelete() {
-    const ingredientToDelete = this.ingredientForm?.value;
-    if (this.recipe && this.recipe.ingredients) {
-      const index = this.recipe.ingredients.findIndex(
-        (ingredient) =>
-          ingredient.name === ingredientToDelete.name &&
-          ingredient.quantity === ingredientToDelete.quantity
-      );
-
-      if (index !== -1) {
-        this.recipe.ingredients.splice(index, 1);
-        this.recipeService.updateRecipe(this.recipe as Recipe, this.id!);
-      } else {
-        console.log("Ingredient not found in the recipe's ingredients list.");
-      }
-    } else {
-      console.log('Recipe or ingredients list is undefined.');
-    }
+    this.shoppingListService.deleteShoppingItem(this.shoppingItem?.id ?? '');
+    this.shoppingItems = this.shoppingItems?.filter(
+      (i) => i.id !== this.shoppingItem?.id
+    );
     this.handleClear();
+    this.router.navigate(['/shopping-list']);
   }
   handleClear() {
     this.ingredientForm?.reset();
